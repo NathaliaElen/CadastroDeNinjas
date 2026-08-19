@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.ninjas.dto.NinjaRequestDTO;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.ninjas.dto.NinjaResponseDTO;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.ninjas.service.NinjaService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,16 +31,18 @@ public class NinjaController {
     this.ninjaService = ninjaService;
   }
 
+  @Operation(description = "Criar um ninja")
   @PostMapping(version = "v1")
   public ResponseEntity<NinjaResponseDTO> salvar(
-    @RequestBody @Valid NinjaRequestDTO ninjaRequestDTO) {
+      @RequestBody @Valid NinjaRequestDTO ninjaRequestDTO) {
 
     var ninjaCriado = ninjaService.criar(ninjaRequestDTO);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(ninjaCriado);
-      
+
   }
 
+  @Operation(description = "Buscar todos os ninjas")
   @GetMapping(version = "v1")
   public ResponseEntity<List<NinjaResponseDTO>> listarTodos() {
 
@@ -49,6 +52,7 @@ public class NinjaController {
 
   }
 
+  @Operation(description = "Buscar um ninja")
   @GetMapping(value = "/{id}", version = "v1")
   public ResponseEntity<NinjaResponseDTO> buscarPorId(@PathVariable Long id) {
 
@@ -58,18 +62,20 @@ public class NinjaController {
 
   }
 
+  @Operation(description = "Editar um ninja")
   @PutMapping(value = "/{id}", version = "v1")
   public ResponseEntity<NinjaResponseDTO> editar(
       @RequestBody @Valid NinjaRequestDTO ninjaRequestDTO,
       @PathVariable Long id
-    ) {
-      
+  ) {
+
     var ninjaEditado = ninjaService.editar(id, ninjaRequestDTO);
 
     return ResponseEntity.status(HttpStatus.OK).body(ninjaEditado);
 
-    }
+  }
 
+  @Operation(description = "Deletar um ninja")
   @DeleteMapping(value = "/{id}", version = "v1")
   public ResponseEntity<Void> deletar(@PathVariable Long id) {
 

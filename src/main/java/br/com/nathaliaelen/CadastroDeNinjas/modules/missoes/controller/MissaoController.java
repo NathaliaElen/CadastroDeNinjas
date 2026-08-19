@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.missoes.dto.MissaoRequestDTO;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.missoes.dto.MissaoResponseDTO;
 import br.com.nathaliaelen.CadastroDeNinjas.modules.missoes.service.MissaoService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class MissaoController {
     this.missaoService = missaoService;
   }
 
+  @Operation(description = "Criar uma missão")
   @PostMapping(version = "v1")
   public ResponseEntity<MissaoResponseDTO> salvar(
       @RequestBody @Valid MissaoRequestDTO missaoRequestDTO) {
@@ -40,6 +42,7 @@ public class MissaoController {
 
   }
   
+  @Operation(description = "Listar todas as missões")
   @GetMapping(version = "v1")
   public ResponseEntity<List<MissaoResponseDTO>> listarTodas() {
 
@@ -49,6 +52,7 @@ public class MissaoController {
 
   }
   
+  @Operation(description = "Buscar uma missão")
   @GetMapping(value = "/{id}", version = "v1")
   public ResponseEntity<MissaoResponseDTO> buscarPorId(@PathVariable Long id) {
 
@@ -58,6 +62,7 @@ public class MissaoController {
 
   }
   
+  @Operation(description = "Editar uma missão")
   @PutMapping(value = "/{id}", version = "v1")
   public ResponseEntity<MissaoResponseDTO> editar(
       @PathVariable Long id,
@@ -70,6 +75,7 @@ public class MissaoController {
 
   }
 
+  @Operation(description = "Deletar uma missão")
   @DeleteMapping(value = "/{id}", version = "v1")
   public ResponseEntity<Void> deletar(@PathVariable Long id) {
 
