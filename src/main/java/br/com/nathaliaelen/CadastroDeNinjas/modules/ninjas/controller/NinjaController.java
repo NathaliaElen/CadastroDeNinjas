@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/ninjas")
+@RequestMapping("/api/ninjas")
 public class NinjaController {
   
   private final NinjaService ninjaService;
@@ -30,7 +30,7 @@ public class NinjaController {
     this.ninjaService = ninjaService;
   }
 
-  @PostMapping
+  @PostMapping(version = "v1")
   public ResponseEntity<NinjaResponseDTO> salvar(
     @RequestBody @Valid NinjaRequestDTO ninjaRequestDTO) {
 
@@ -40,7 +40,7 @@ public class NinjaController {
       
   }
 
-  @GetMapping
+  @GetMapping(version = "v1")
   public ResponseEntity<List<NinjaResponseDTO>> listarTodos() {
 
     var ninjas = ninjaService.listarTodos();
@@ -49,7 +49,7 @@ public class NinjaController {
 
   }
 
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}", version = "v1")
   public ResponseEntity<NinjaResponseDTO> buscarPorId(@PathVariable Long id) {
 
     var ninja = ninjaService.buscarPorId(id);
@@ -58,7 +58,7 @@ public class NinjaController {
 
   }
 
-  @PutMapping("/{id}")
+  @PutMapping(value = "/{id}", version = "v1")
   public ResponseEntity<NinjaResponseDTO> editar(
       @RequestBody @Valid NinjaRequestDTO ninjaRequestDTO,
       @PathVariable Long id
@@ -70,7 +70,7 @@ public class NinjaController {
 
     }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping(value = "/{id}", version = "v1")
   public ResponseEntity<Void> deletar(@PathVariable Long id) {
 
     ninjaService.deletar(id);

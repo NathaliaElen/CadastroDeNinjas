@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/missoes")
+@RequestMapping("/api/missoes")
 public class MissaoController {
 
   private final MissaoService missaoService;
@@ -30,7 +30,7 @@ public class MissaoController {
     this.missaoService = missaoService;
   }
 
-  @PostMapping
+  @PostMapping(version = "v1")
   public ResponseEntity<MissaoResponseDTO> salvar(
       @RequestBody @Valid MissaoRequestDTO missaoRequestDTO) {
 
@@ -40,7 +40,7 @@ public class MissaoController {
 
   }
   
-  @GetMapping
+  @GetMapping(version = "v1")
   public ResponseEntity<List<MissaoResponseDTO>> listarTodas() {
 
     var missoes = missaoService.listarTodas();
@@ -49,7 +49,7 @@ public class MissaoController {
 
   }
   
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}", version = "v1")
   public ResponseEntity<MissaoResponseDTO> buscarPorId(@PathVariable Long id) {
 
     var missao = missaoService.buscarPorId(id);
@@ -58,7 +58,7 @@ public class MissaoController {
 
   }
   
-  @PutMapping("/{id}")
+  @PutMapping(value = "/{id}", version = "v1")
   public ResponseEntity<MissaoResponseDTO> editar(
       @PathVariable Long id,
       @RequestBody @Valid MissaoRequestDTO missaoRequestDTO
@@ -70,7 +70,7 @@ public class MissaoController {
 
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping(value = "/{id}", version = "v1")
   public ResponseEntity<Void> deletar(@PathVariable Long id) {
 
     missaoService.deletar(id);
