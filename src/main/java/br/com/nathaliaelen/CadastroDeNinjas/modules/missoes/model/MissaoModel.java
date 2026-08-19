@@ -33,7 +33,7 @@ public class MissaoModel {
   @Column(updatable = false, nullable = false)
   private Long id; // primary key
 
-  @Column(nullable = false, length = 50)
+  @Column(unique = true, nullable = false, length = 50)
   private String nome;
 
   @Column(nullable = false, length = 50)
