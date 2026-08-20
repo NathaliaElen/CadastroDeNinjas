@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/missoes")
@@ -44,21 +47,43 @@ public class MissaoController {
   
   @Operation(description = "Listar todas as missões")
   @GetMapping(version = "v1")
-  public ResponseEntity<List<MissaoResponseDTO>> listarTodas() {
+  public ResponseEntity<List<EntityModel<MissaoResponseDTO>>> listarTodas() {
 
     var missoes = missaoService.listarTodas();
 
-    return ResponseEntity.status(HttpStatus.OK).body(missoes);
+    var missoesComLinks = missoes.stream()
+        .map(missao -> {
+            var resource = EntityModel.of(missao);
+
+            resource.add(
+                linkTo(methodOn(MissaoController.class)
+                    .buscarPorId(missao.id()))
+                    .withSelfRel()
+            );
+
+            return resource;
+        })
+        .toList();
+
+      return ResponseEntity.ok(missoesComLinks);
 
   }
   
   @Operation(description = "Buscar uma missão")
   @GetMapping(value = "/{id}", version = "v1")
-  public ResponseEntity<MissaoResponseDTO> buscarPorId(@PathVariable Long id) {
+  public ResponseEntity<EntityModel<MissaoResponseDTO>> buscarPorId(@PathVariable Long id) {
 
     var missao = missaoService.buscarPorId(id);
 
-    return ResponseEntity.status(HttpStatus.OK).body(missao);
+    var resource = EntityModel.of(missao);
+
+    resource.add(
+      linkTo(methodOn(MissaoController.class)
+          .listarTodas())
+          .withRel("Lista de Missões")
+    );
+
+    return ResponseEntity.ok(resource);
 
   }
   
