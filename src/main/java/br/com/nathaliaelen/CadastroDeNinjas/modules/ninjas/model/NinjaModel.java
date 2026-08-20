@@ -44,7 +44,7 @@ public class NinjaModel {
 
   // @ManyToOne - Vários ninjas podem estar associados a uma mesma missão.
   @ManyToOne
-  @JoinColumn(name = "missao_id") // foreign key
+  @JoinColumn(name = "missao_id", nullable = false) // foreign key
   private MissaoModel missao;
 
   @CreationTimestamp
